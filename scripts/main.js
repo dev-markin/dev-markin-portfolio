@@ -559,20 +559,91 @@ function closeMenuMobile() {
 }
 
 // ──────────────────────────────────────────
-//  TERMINAL
+//  TERMINAL HELPERS (algoritmos em JS)
+// ──────────────────────────────────────────
+function _fib(n) {
+  n = Math.min(Math.max(parseInt(n) || 8, 1), 20);
+  const s = [0, 1];
+  for (let i = 2; i <= n; i++) s.push(s[i - 1] + s[i - 2]);
+  return s.slice(0, n + 1);
+}
+function _fact(n) {
+  n = Math.min(Math.max(parseInt(n) || 5, 0), 15);
+  let r = 1;
+  for (let i = 2; i <= n; i++) r *= i;
+  return [n, r];
+}
+function _sieve(n) {
+  n = Math.min(Math.max(parseInt(n) || 30, 2), 100);
+  const s = Array(n + 1).fill(true);
+  s[0] = s[1] = false;
+  for (let i = 2; i * i <= n; i++) if (s[i]) for (let j = i * i; j <= n; j += i) s[j] = false;
+  return s.reduce((a, v, i) => (v ? [...a, i] : a), []);
+}
+function _bubbleSort(arr) {
+  const a = [...arr], steps = [];
+  for (let i = 0; i < a.length - 1; i++)
+    for (let j = 0; j < a.length - i - 1; j++) {
+      if (a[j] > a[j + 1]) [a[j], a[j + 1]] = [a[j + 1], a[j]];
+      steps.push([...a]);
+    }
+  return { sorted: a, steps };
+}
+
+// ──────────────────────────────────────────
+//  TERMINAL COMMANDS
 // ──────────────────────────────────────────
 const terminalCommands = {
+
+  // ── PORTFÓLIO ──
   help: () => [
-    '<span class="t-info">Comandos disponíveis:</span>',
-    '<span class="t-cmd">  about</span>       → Informações sobre Marcos',
-    '<span class="t-cmd">  skills</span>      → Lista de skills',
-    '<span class="t-cmd">  projects</span>    → Projetos recentes',
-    '<span class="t-cmd">  contact</span>     → Informações de contato',
-    '<span class="t-cmd">  stack</span>       → Stack completa',
-    '<span class="t-cmd">  easter</span>      → 🥚 Você chegou até aqui...',
-    '<span class="t-cmd">  clear</span>       → Limpar terminal',
-    '<span class="t-cmd">  exit</span>        → Fechar terminal',
+    '<span class="t-info">╔══════════════════════════════════════════════╗</span>',
+    '<span class="t-info">║   MARKIN.OS — Comandos disponíveis           ║</span>',
+    '<span class="t-info">╚══════════════════════════════════════════════╝</span>',
+    '',
+    '<span class="t-warn">── PORTFÓLIO ──</span>',
+    '<span class="t-cmd">  about</span>               → Sobre o dev',
+    '<span class="t-cmd">  skills</span>              → Stack de habilidades',
+    '<span class="t-cmd">  projects</span>            → Projetos recentes',
+    '<span class="t-cmd">  contact</span>             → Contatos',
+    '<span class="t-cmd">  stack</span>               → Stack completa',
+    '<span class="t-cmd">  easter</span>              → 🥚 Easter egg',
+    '',
+    '<span class="t-warn">── PYTHON REPL ──</span>',
+    '<span class="t-cmd">  python</span>              → Abrir REPL simulado',
+    '<span class="t-cmd">  python print("oi")</span>  → Saída de texto',
+    '<span class="t-cmd">  python fib(10)</span>      → Fibonacci',
+    '<span class="t-cmd">  python fact(7)</span>      → Fatorial',
+    '<span class="t-cmd">  python primes(30)</span>   → Primos',
+    '<span class="t-cmd">  python 2 ** 10</span>      → Expressão matemática',
+    '<span class="t-cmd">  python range(8)</span>     → range()',
+    '<span class="t-cmd">  python sum([1,2,3])</span> → sum()',
+    '<span class="t-cmd">  python reverse("x")</span> → reverse string',
+    '',
+    '<span class="t-warn">── JAVA ──</span>',
+    '<span class="t-cmd">  java</span>                → Ver classes disponíveis',
+    '<span class="t-cmd">  java HelloWorld</span>     → Hello World',
+    '<span class="t-cmd">  java Fibonacci</span>      → Fibonacci em Java',
+    '<span class="t-cmd">  java BubbleSort</span>     → Algoritmo de ordenação',
+    '<span class="t-cmd">  java StringOps</span>      → Operações com String',
+    '<span class="t-cmd">  java Recursion</span>      → Recursão / Fatorial',
+    '',
+    '<span class="t-warn">── ALGORITMOS ──</span>',
+    '<span class="t-cmd">  fib &lt;n&gt;</span>            → Sequência de Fibonacci',
+    '<span class="t-cmd">  fact &lt;n&gt;</span>           → Fatorial de n',
+    '<span class="t-cmd">  primes &lt;n&gt;</span>         → Crivo de Eratóstenes',
+    '<span class="t-cmd">  sort &lt;n1 n2 ...&gt;</span>   → Bubble Sort passo a passo',
+    '<span class="t-cmd">  bsearch &lt;t&gt; &lt;arr&gt;</span>  → Busca Binária',
+    '<span class="t-cmd">  palindrome &lt;str&gt;</span>   → Verificar palíndromo',
+    '<span class="t-cmd">  anagram &lt;w1&gt; &lt;w2&gt;</span>  → Verificar anagrama',
+    '<span class="t-cmd">  reverse &lt;str&gt;</span>      → Reverter string',
+    '<span class="t-cmd">  matrix</span>              → Multiplicação de matrizes',
+    '',
+    '<span class="t-warn">── SISTEMA ──</span>',
+    '<span class="t-cmd">  clear</span>               → Limpar terminal',
+    '<span class="t-cmd">  exit</span>                → Fechar terminal',
   ],
+
   about: () => [
     '<span class="t-info">╔══════════════════════════════════╗</span>',
     '<span class="t-info">║  MARCOS ROGÉRIO TUDES LOPES      ║</span>',
@@ -583,6 +654,7 @@ const terminalCommands = {
     '> Desenvolvendo sistema PDV completo (VixTec)',
     '> Combinando Python + Java + IA para soluções robustas',
   ],
+
   skills: () => [
     '<span class="t-info">Stack principal:</span>',
     '  Python     ██████████  90%',
@@ -595,30 +667,34 @@ const terminalCommands = {
     '  APIs REST  ██████████  90%',
     '  IA/Claude  ████████    75%',
   ],
+
   projects: () => [
     '<span class="t-info">Projetos recentes:</span>',
-    '  🔥 Sistema PDV       → Flask/Django + PostgreSQL',
+    '  🔥 Sistema PDV         → Flask + PostgreSQL',
     '  📊 Dashboard Analytics → Pandas + Python',
-    '  🤖 IA Automation     → Claude API + Flask',
-    '  🚌 SEMOB Web System  → Python + JavaScript',
+    '  🤖 IA Automation       → Claude API + Flask',
+    '  🚌 SEMOB Web System    → Python + JavaScript',
   ],
+
   contact: () => [
     '<span class="t-info">Contatos:</span>',
-    '  GitHub:   github.com/markin-dev',
-    '  LinkedIn: linkedin.com/in/markin-dev',
-    '  Email:    marcos@markin.dev',
+    '  GitHub:   github.com/dev-markin',
+    '  LinkedIn: linkedin.com/in/marcos-lopes-b99a47201',
+    '  Email:    marcosr10oficial@hotmail.com',
   ],
+
   stack: () => [
     '<span class="t-info">╔══════════════════════════════════════╗</span>',
     '<span class="t-info">║  FULL STACK + DATA + IA              ║</span>',
     '<span class="t-info">╚══════════════════════════════════════╝</span>',
     '',
-    '<span class="t-warn">Backend:</span>  Python (Flask, Django) | Java | APIs REST',
+    '<span class="t-warn">Backend:</span>  Python (Flask) | Java | APIs REST',
     '<span class="t-warn">Frontend:</span> JavaScript | HTML5 | CSS3',
     '<span class="t-warn">Database:</span> PostgreSQL | MySQL | SQLite',
     '<span class="t-warn">Data:</span>     Pandas | Dashboards | Relatórios',
     '<span class="t-warn">IA:</span>       Claude API | Automação Inteligente',
   ],
+
   easter: () => [
     '<span style="color:#bf00ff">╔═══════════════════════════════════╗</span>',
     '<span style="color:#bf00ff">║     🥚 EASTER EGG DESBLOQUEADO!   ║</span>',
@@ -632,6 +708,337 @@ const terminalCommands = {
     '> Habilidade desbloqueada: CURIOSIDADE ✓',
     '> Habilidade desbloqueada: ATENÇÃO AOS DETALHES ✓',
   ],
+
+  // ── PYTHON REPL ──
+  python: (args) => {
+    if (!args.length) return [
+      '<span style="color:#fbbf24">Python 3.12.0 (markin-env) — Simulador interativo</span>',
+      '<span class="t-info">Exemplos que você pode rodar:</span>',
+      '',
+      '<span class="t-cmd">  python print("Hello, MARKIN!")</span>',
+      '<span class="t-cmd">  python fib(10)</span>',
+      '<span class="t-cmd">  python fact(7)</span>',
+      '<span class="t-cmd">  python primes(30)</span>',
+      '<span class="t-cmd">  python range(8)</span>',
+      '<span class="t-cmd">  python 2 ** 10</span>',
+      '<span class="t-cmd">  python sum([1,2,3,4,5])</span>',
+      '<span class="t-cmd">  python reverse("markin")</span>',
+    ];
+    const expr = args.join(' ');
+
+    // print("...")
+    const printM = expr.match(/^print\(["'](.*?)["']\)$/i);
+    if (printM) return [`<span class="t-info">>>> ${expr}</span>`, printM[1]];
+
+    // fib(n)
+    const fibM = expr.match(/^fib\((\d+)\)$/i);
+    if (fibM) {
+      const s = _fib(parseInt(fibM[1]));
+      return [`<span class="t-info">>>> fib(${fibM[1]})</span>`, `<span class="t-warn">[${s.join(', ')}]</span>`];
+    }
+
+    // fact(n) / factorial(n)
+    const factM = expr.match(/^fact(?:orial)?\((\d+)\)$/i);
+    if (factM) {
+      const [n, r] = _fact(parseInt(factM[1]));
+      return [`<span class="t-info">>>> fact(${n})</span>`, `<span class="t-warn">${r}</span>`];
+    }
+
+    // primes(n)
+    const primesM = expr.match(/^primes\((\d+)\)$/i);
+    if (primesM) {
+      const p = _sieve(parseInt(primesM[1]));
+      return [`<span class="t-info">>>> primes(${primesM[1]})</span>`, `<span class="t-warn">[${p.join(', ')}]</span>`];
+    }
+
+    // range(n)
+    const rangeM = expr.match(/^range\((\d+)\)$/i);
+    if (rangeM) {
+      const n = Math.min(parseInt(rangeM[1]), 30);
+      return [`<span class="t-info">>>> range(${rangeM[1]})</span>`, `<span class="t-warn">[${Array.from({length:n},(_,i)=>i).join(', ')}]</span>`];
+    }
+
+    // 2 ** 10
+    const powM = expr.match(/^(\d+)\s*\*\*\s*(\d+)$/);
+    if (powM) return [`<span class="t-info">>>> ${expr}</span>`, `<span class="t-warn">${Math.pow(parseInt(powM[1]), parseInt(powM[2]))}</span>`];
+
+    // reverse("str")
+    const revM = expr.match(/^reverse\(["'](.*?)["']\)$/i);
+    if (revM) return [`<span class="t-info">>>> reverse("${revM[1]}")</span>`, `<span class="t-warn">'${revM[1].split('').reverse().join('')}'</span>`];
+
+    // sum([...])
+    const sumM = expr.match(/^sum\(\[([^\]]+)\]\)$/i);
+    if (sumM) {
+      const nums = sumM[1].split(',').map(n => parseFloat(n.trim())).filter(n => !isNaN(n));
+      return [`<span class="t-info">>>> sum([${nums.join(', ')}])</span>`, `<span class="t-warn">${nums.reduce((a, b) => a + b, 0)}</span>`];
+    }
+
+    // expressão matemática pura (apenas dígitos e operadores)
+    if (/^[\d\s\+\-\*\/\(\)\.%]+$/.test(expr)) {
+      try {
+        const r = Function('"use strict"; return (' + expr + ')')();
+        return [`<span class="t-info">>>> ${expr}</span>`, `<span class="t-warn">${r}</span>`];
+      } catch (e) {}
+    }
+
+    return [
+      `<span class="t-info">>>> ${expr}</span>`,
+      `<span class="t-err">NameError: '${args[0]}' não reconhecido.</span>`,
+      `<span class="t-info">Dica: digite 'python' para ver os exemplos.</span>`,
+    ];
+  },
+
+  // ── JAVA ──
+  java: (args) => {
+    const cls = (args[0] || '').toLowerCase();
+    if (!cls) return [
+      '<span style="color:#f97316">☕  Java 21 LTS (OpenJDK) — markin-jvm</span>',
+      '<span class="t-info">Classes disponíveis para executar:</span>',
+      '',
+      '<span class="t-cmd">  java HelloWorld</span>    → Hello World clássico',
+      '<span class="t-cmd">  java Fibonacci</span>     → Sequência de Fibonacci',
+      '<span class="t-cmd">  java BubbleSort</span>    → Algoritmo de ordenação',
+      '<span class="t-cmd">  java StringOps</span>     → Operações com String',
+      '<span class="t-cmd">  java Recursion</span>     → Recursão / Fatorial',
+    ];
+
+    if (cls === 'helloworld') return [
+      '<span class="t-info">$ javac HelloWorld.java</span>',
+      '<span style="color:#00ff88">✓  HelloWorld.class gerado</span>',
+      '<span class="t-info">$ java HelloWorld</span>',
+      '',
+      '<span style="color:#94a3b8">public class HelloWorld {</span>',
+      '<span style="color:#94a3b8">  public static void main(String[] args) {</span>',
+      '<span style="color:#fbbf24">    System.out.println("Hello, World! — MARKIN.dev");</span>',
+      '<span style="color:#94a3b8">  }</span>',
+      '<span style="color:#94a3b8">}</span>',
+      '',
+      '<span style="color:#00ff88">OUTPUT → Hello, World! — MARKIN.dev</span>',
+    ];
+
+    if (cls === 'fibonacci') {
+      const seq = _fib(10);
+      return [
+        '<span class="t-info">$ javac Fibonacci.java  →  ✓</span>',
+        '<span class="t-info">$ java Fibonacci</span>',
+        '',
+        '<span style="color:#94a3b8">int[] f = new int[11];</span>',
+        '<span style="color:#94a3b8">f[0]=0; f[1]=1;</span>',
+        '<span style="color:#fbbf24">for (int i=2; i&lt;=10; i++)</span>',
+        '<span style="color:#fbbf24">  f[i] = f[i-1] + f[i-2];</span>',
+        '<span style="color:#fbbf24">System.out.println(Arrays.toString(f));</span>',
+        '',
+        `<span style="color:#00ff88">OUTPUT → [${seq.join(', ')}]</span>`,
+      ];
+    }
+
+    if (cls === 'bubblesort') {
+      const input = [64, 34, 25, 12, 22, 11, 90];
+      const { sorted, steps } = _bubbleSort(input);
+      return [
+        '<span class="t-info">$ javac BubbleSort.java  →  ✓</span>',
+        '<span class="t-info">$ java BubbleSort</span>',
+        '',
+        `<span style="color:#94a3b8">int[] arr = {${input.join(', ')}};</span>`,
+        '<span style="color:#fbbf24">for (int i=0; i&lt;n-1; i++)</span>',
+        '<span style="color:#fbbf24">  for (int j=0; j&lt;n-i-1; j++)</span>',
+        '<span style="color:#fbbf24">    if (arr[j] &gt; arr[j+1]) swap(arr, j, j+1);</span>',
+        '',
+        `<span class="t-info">Entrada:  [${input.join(', ')}]</span>`,
+        `<span style="color:#00ff88">OUTPUT  → [${sorted.join(', ')}]</span>`,
+        `<span class="t-info">Comparações: ${steps.length} | O(n²)</span>`,
+      ];
+    }
+
+    if (cls === 'stringops') return [
+      '<span class="t-info">$ javac StringOps.java  →  ✓</span>',
+      '<span class="t-info">$ java StringOps</span>',
+      '',
+      '<span style="color:#94a3b8">String s = "MARKIN.DEV";</span>',
+      '<span style="color:#fbbf24">s.length()          → 10</span>',
+      '<span style="color:#fbbf24">s.toLowerCase()     → "markin.dev"</span>',
+      '<span style="color:#fbbf24">s.substring(0, 6)   → "MARKIN"</span>',
+      '<span style="color:#fbbf24">s.contains("DEV")   → true</span>',
+      '<span style="color:#fbbf24">s.replace(".", "-") → "MARKIN-DEV"</span>',
+      '<span style="color:#fbbf24">s.charAt(0)         → \'M\'</span>',
+      '',
+      '<span style="color:#00ff88">✓  Executado com sucesso</span>',
+    ];
+
+    if (cls === 'recursion') {
+      const [n, r] = _fact(6);
+      return [
+        '<span class="t-info">$ javac Recursion.java  →  ✓</span>',
+        '<span class="t-info">$ java Recursion</span>',
+        '',
+        '<span style="color:#94a3b8">static int factorial(int n) {</span>',
+        '<span style="color:#fbbf24">  if (n &lt;= 1) return 1;</span>',
+        '<span style="color:#fbbf24">  return n * factorial(n - 1);</span>',
+        '<span style="color:#94a3b8">}</span>',
+        '',
+        '<span class="t-info">Trace: factorial(6)</span>',
+        '<span class="t-info">  factorial(6) → 6 × factorial(5)</span>',
+        '<span class="t-info">    factorial(5) → 5 × factorial(4)</span>',
+        '<span class="t-info">      factorial(4) → 4 × factorial(3)</span>',
+        '<span class="t-info">        factorial(3) → 3 × factorial(2)</span>',
+        '<span class="t-info">          factorial(2) → 2 × factorial(1)</span>',
+        '<span class="t-info">            factorial(1) → 1  [base case]</span>',
+        '',
+        `<span style="color:#bf00ff">Retorno: 6×5×4×3×2×1 = ${r}</span>`,
+        `<span style="color:#00ff88">OUTPUT → ${r}</span>`,
+      ];
+    }
+
+    return [
+      `<span class="t-err">Classe '${args[0]}' não encontrada.</span>`,
+      `<span class="t-info">Disponíveis: HelloWorld · Fibonacci · BubbleSort · StringOps · Recursion</span>`,
+    ];
+  },
+
+  // ── ALGORITMOS ──
+  fib: (args) => {
+    const n = Math.min(Math.max(parseInt(args[0]) || 10, 1), 20);
+    const seq = _fib(n);
+    return [
+      `<span class="t-info">Sequência de Fibonacci — n = ${n}</span>`,
+      `<span class="t-warn">[${seq.join(', ')}]</span>`,
+      '',
+      `<span class="t-info">Último valor: ${seq[seq.length - 1]}</span>`,
+      `<span class="t-info">Complexidade: O(n) | Espaço: O(n)</span>`,
+    ];
+  },
+
+  fact: (args) => {
+    const [n, r] = _fact(parseInt(args[0]) || 5);
+    const formula = n <= 1 ? '1' : Array.from({length: n}, (_, i) => i + 1).join(' × ');
+    return [
+      `<span class="t-info">Fatorial — n = ${n}</span>`,
+      `<span class="t-warn">${n}! = ${formula} = ${r}</span>`,
+      '',
+      `<span class="t-info">Complexidade: O(n)</span>`,
+    ];
+  },
+
+  primes: (args) => {
+    const n = Math.min(Math.max(parseInt(args[0]) || 30, 2), 100);
+    const p = _sieve(n);
+    return [
+      `<span class="t-info">Crivo de Eratóstenes — até ${n}</span>`,
+      `<span class="t-warn">[${p.join(', ')}]</span>`,
+      '',
+      `<span class="t-info">Total: ${p.length} primos | Complexidade: O(n log log n)</span>`,
+    ];
+  },
+
+  sort: (args) => {
+    let nums = args.map(n => parseInt(n)).filter(n => !isNaN(n));
+    if (!nums.length) nums = [64, 34, 25, 12, 22, 11, 90];
+    const { sorted, steps } = _bubbleSort(nums);
+    const stride = Math.max(1, Math.ceil(steps.length / 5));
+    const show = steps.filter((_, i) => i % stride === 0).slice(0, 5);
+    return [
+      `<span class="t-info">Bubble Sort</span>`,
+      `<span class="t-info">Entrada:  [${nums.join(', ')}]</span>`,
+      '',
+      ...show.map((s, i) => `<span class="t-info">  Passo ${i + 1}: [${s.join(', ')}]</span>`),
+      '',
+      `<span class="t-warn">Saída:    [${sorted.join(', ')}]</span>`,
+      `<span class="t-info">Comparações: ${steps.length} | Complexidade: O(n²)</span>`,
+    ];
+  },
+
+  bsearch: (args) => {
+    const target = parseInt(args[0]);
+    const arr = args.slice(1).map(n => parseInt(n)).filter(n => !isNaN(n)).sort((a, b) => a - b);
+    if (isNaN(target) || !arr.length) return [
+      '<span class="t-info">Uso: bsearch &lt;alvo&gt; &lt;n1 n2 n3...&gt;</span>',
+      '<span class="t-info">Ex:  bsearch 7 1 3 5 7 9 11 13</span>',
+    ];
+    let lo = 0, hi = arr.length - 1, steps = 0, found = -1;
+    const log = [];
+    while (lo <= hi) {
+      const mid = Math.floor((lo + hi) / 2);
+      steps++;
+      const dir = arr[mid] === target ? '== ✓' : arr[mid] < target ? '&lt; → direita' : '&gt; → esquerda';
+      log.push(`<span class="t-info">  Passo ${steps}: arr[${mid}]=${arr[mid]} ${dir}</span>`);
+      if (arr[mid] === target) { found = mid; break; }
+      else if (arr[mid] < target) lo = mid + 1;
+      else hi = mid - 1;
+    }
+    return [
+      `<span class="t-info">Binary Search — alvo: ${target}</span>`,
+      `<span class="t-info">Array: [${arr.join(', ')}]</span>`,
+      '',
+      ...log,
+      '',
+      found >= 0
+        ? `<span style="color:#00ff88">✓ Encontrado no índice ${found} em ${steps} passo(s)!</span>`
+        : `<span class="t-err">✗ ${target} não encontrado após ${steps} passo(s).</span>`,
+      `<span class="t-info">Complexidade: O(log n)</span>`,
+    ];
+  },
+
+  palindrome: (args) => {
+    const word = args.join('').toLowerCase();
+    if (!word) return [
+      '<span class="t-info">Uso: palindrome &lt;palavra&gt;</span>',
+      '<span class="t-info">Ex:  palindrome racecar</span>',
+    ];
+    const rev = word.split('').reverse().join('');
+    return [
+      `<span class="t-info">Original: "${word}"</span>`,
+      `<span class="t-info">Reverso:  "${rev}"</span>`,
+      '',
+      word === rev
+        ? `<span style="color:#00ff88">✓ "${word}" É um palíndromo! 🏆</span>`
+        : `<span class="t-err">✗ "${word}" NÃO é um palíndromo.</span>`,
+    ];
+  },
+
+  reverse: (args) => {
+    const text = args.join(' ');
+    if (!text) return ['<span class="t-info">Uso: reverse &lt;texto&gt;</span>'];
+    return [
+      `<span class="t-info">Original: "${text}"</span>`,
+      `<span class="t-warn">Reverso:  "${text.split('').reverse().join('')}"</span>`,
+    ];
+  },
+
+  anagram: (args) => {
+    const [w1, w2] = [args[0] || '', args[1] || ''];
+    if (!w1 || !w2) return [
+      '<span class="t-info">Uso: anagram &lt;palavra1&gt; &lt;palavra2&gt;</span>',
+      '<span class="t-info">Ex:  anagram listen silent</span>',
+    ];
+    const norm = s => s.toLowerCase().split('').sort().join('');
+    return [
+      `<span class="t-info">Palavra 1: "${w1}" → sorted: "${norm(w1)}"</span>`,
+      `<span class="t-info">Palavra 2: "${w2}" → sorted: "${norm(w2)}"</span>`,
+      '',
+      norm(w1) === norm(w2)
+        ? `<span style="color:#00ff88">✓ São anagramas! 🏆</span>`
+        : `<span class="t-err">✗ NÃO são anagramas.</span>`,
+    ];
+  },
+
+  matrix: () => [
+    '<span class="t-info">Multiplicação de Matrizes (2×2)</span>',
+    '',
+    '<span style="color:#94a3b8">A = [[1, 2],    B = [[5, 6],</span>',
+    '<span style="color:#94a3b8">     [3, 4]]         [7, 8]]</span>',
+    '',
+    '<span class="t-info">Calculando A × B...</span>',
+    '<span style="color:#fbbf24">C[0][0] = 1×5 + 2×7 = 5 + 14 = 19</span>',
+    '<span style="color:#fbbf24">C[0][1] = 1×6 + 2×8 = 6 + 16 = 22</span>',
+    '<span style="color:#fbbf24">C[1][0] = 3×5 + 4×7 = 15 + 28 = 43</span>',
+    '<span style="color:#fbbf24">C[1][1] = 3×6 + 4×8 = 18 + 32 = 50</span>',
+    '',
+    '<span style="color:#00ff88">C = [[19, 22],</span>',
+    '<span style="color:#00ff88">     [43, 50]]</span>',
+    '',
+    '<span class="t-info">Complexidade: O(n³)</span>',
+  ],
+
   clear: () => { document.getElementById('terminal-output').innerHTML = ''; return []; },
   exit:  () => { closeTerminal(); return []; },
 };
@@ -664,15 +1071,18 @@ function initTerminal() {
   input.addEventListener('keydown', e => {
     SFX.termKey();
     if (e.key === 'Enter') {
-      const cmd = input.value.trim().toLowerCase();
-      if (!cmd) return;
-      terminalWrite([`<span class="t-cmd">marcos@markin.dev:~$ ${cmd}</span>`]);
-      const fn = terminalCommands[cmd];
+      const raw = input.value.trim();
+      if (!raw) return;
+      const parts = raw.split(/\s+/);
+      const base  = parts[0].toLowerCase();
+      const args  = parts.slice(1);
+      terminalWrite([`<span class="t-cmd">marcos@markin.dev:~$ ${raw}</span>`]);
+      const fn = terminalCommands[base];
       if (fn) {
-        const result = fn();
+        const result = fn(args, raw);
         if (result && result.length) terminalWrite(result);
       } else {
-        terminalWrite([`<span class="t-err">Comando não encontrado: ${cmd}. Digite 'help' para listar os comandos.</span>`]);
+        terminalWrite([`<span class="t-err">Comando não encontrado: "${base}". Digite 'help' para ver os comandos.</span>`]);
       }
       input.value = '';
     }
@@ -686,7 +1096,8 @@ function openTerminal() {
   if (!out.hasChildNodes()) {
     terminalWrite([
       '<span class="t-info">MARKIN.OS Terminal v2.4.0</span>',
-      '<span class="t-info">Digite \'help\' para ver os comandos disponíveis.</span>',
+      '<span class="t-info">Digite \'help\' para listar os comandos.</span>',
+      '<span class="t-info">Experimente: python fib(10)  ·  java Fibonacci  ·  sort 5 3 1 4 2</span>',
       '',
     ]);
   }
