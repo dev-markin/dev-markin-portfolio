@@ -4,6 +4,148 @@
 ═══════════════════════════════════════════════════════ */
 
 // ──────────────────────────────────────────
+//  SFX ENGINE (Web Audio API — sem arquivos)
+// ──────────────────────────────────────────
+const SFX = {
+  _ctx: null,
+  enabled: true,
+
+  ctx() {
+    if (!this._ctx) this._ctx = new (window.AudioContext || window.webkitAudioContext)();
+    if (this._ctx.state === 'suspended') this._ctx.resume();
+    return this._ctx;
+  },
+
+  _play(fn) {
+    if (!this.enabled) return;
+    try { fn(this.ctx()); } catch (e) {}
+  },
+
+  // Clique UI curto
+  click() {
+    this._play(ctx => {
+      const o = ctx.createOscillator(), g = ctx.createGain();
+      o.connect(g); g.connect(ctx.destination);
+      o.type = 'square';
+      o.frequency.setValueAtTime(900, ctx.currentTime);
+      o.frequency.exponentialRampToValueAtTime(440, ctx.currentTime + .06);
+      g.gain.setValueAtTime(.06, ctx.currentTime);
+      g.gain.exponentialRampToValueAtTime(.001, ctx.currentTime + .06);
+      o.start(); o.stop(ctx.currentTime + .07);
+    });
+  },
+
+  // Hover sutil
+  hover() {
+    this._play(ctx => {
+      const o = ctx.createOscillator(), g = ctx.createGain();
+      o.connect(g); g.connect(ctx.destination);
+      o.type = 'sine';
+      o.frequency.setValueAtTime(1200, ctx.currentTime);
+      g.gain.setValueAtTime(.02, ctx.currentTime);
+      g.gain.exponentialRampToValueAtTime(.001, ctx.currentTime + .03);
+      o.start(); o.stop(ctx.currentTime + .035);
+    });
+  },
+
+  // Power-up ao entrar no sistema
+  powerUp() {
+    this._play(ctx => {
+      const o = ctx.createOscillator(), g = ctx.createGain();
+      o.connect(g); g.connect(ctx.destination);
+      o.type = 'sawtooth';
+      o.frequency.setValueAtTime(100, ctx.currentTime);
+      o.frequency.exponentialRampToValueAtTime(1800, ctx.currentTime + .65);
+      g.gain.setValueAtTime(.07, ctx.currentTime);
+      g.gain.exponentialRampToValueAtTime(.001, ctx.currentTime + .7);
+      o.start(); o.stop(ctx.currentTime + .72);
+    });
+  },
+
+  // Tick da máquina de escrever (ruído filtrado)
+  typeTick() {
+    this._play(ctx => {
+      const len = Math.floor(ctx.sampleRate * .018);
+      const buf = ctx.createBuffer(1, len, ctx.sampleRate);
+      const d   = buf.getChannelData(0);
+      for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / len);
+      const src = ctx.createBufferSource();
+      const f   = ctx.createBiquadFilter();
+      const g   = ctx.createGain();
+      f.type = 'bandpass'; f.frequency.value = 3200; f.Q.value = 1.2;
+      src.buffer = buf;
+      src.connect(f); f.connect(g); g.connect(ctx.destination);
+      g.gain.setValueAtTime(.038, ctx.currentTime);
+      src.start();
+    });
+  },
+
+  // Sweep ao animar barras de skill
+  skillSweep() {
+    this._play(ctx => {
+      const o = ctx.createOscillator(), g = ctx.createGain();
+      o.connect(g); g.connect(ctx.destination);
+      o.type = 'sine';
+      o.frequency.setValueAtTime(200, ctx.currentTime);
+      o.frequency.exponentialRampToValueAtTime(900, ctx.currentTime + .45);
+      g.gain.setValueAtTime(.04, ctx.currentTime);
+      g.gain.exponentialRampToValueAtTime(.001, ctx.currentTime + .5);
+      o.start(); o.stop(ctx.currentTime + .52);
+    });
+  },
+
+  // Chime de sucesso (notificações)
+  chime() {
+    this._play(ctx => {
+      [[0, 783.99], [.13, 1046.5]].forEach(([dt, freq]) => {
+        const o = ctx.createOscillator(), g = ctx.createGain();
+        o.connect(g); g.connect(ctx.destination);
+        o.type = 'sine'; o.frequency.value = freq;
+        const t = ctx.currentTime + dt;
+        g.gain.setValueAtTime(.07, t);
+        g.gain.exponentialRampToValueAtTime(.001, t + .5);
+        o.start(t); o.stop(t + .55);
+      });
+    });
+  },
+
+  // Tecla mecânica do terminal
+  termKey() {
+    this._play(ctx => {
+      const o = ctx.createOscillator(), g = ctx.createGain();
+      o.connect(g); g.connect(ctx.destination);
+      o.type = 'square';
+      o.frequency.setValueAtTime(500 + Math.random() * 250, ctx.currentTime);
+      g.gain.setValueAtTime(.028, ctx.currentTime);
+      g.gain.exponentialRampToValueAtTime(.001, ctx.currentTime + .04);
+      o.start(); o.stop(ctx.currentTime + .045);
+    });
+  },
+
+  // Whoosh ao revelar seção
+  whoosh() {
+    this._play(ctx => {
+      const len = Math.floor(ctx.sampleRate * .32);
+      const buf = ctx.createBuffer(1, len, ctx.sampleRate);
+      const d   = buf.getChannelData(0);
+      for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+      const src = ctx.createBufferSource();
+      const f   = ctx.createBiquadFilter();
+      const g   = ctx.createGain();
+      f.type = 'bandpass';
+      f.frequency.setValueAtTime(150, ctx.currentTime);
+      f.frequency.exponentialRampToValueAtTime(3500, ctx.currentTime + .32);
+      f.Q.value = .7;
+      src.buffer = buf;
+      src.connect(f); f.connect(g); g.connect(ctx.destination);
+      g.gain.setValueAtTime(.065, ctx.currentTime);
+      g.gain.exponentialRampToValueAtTime(.001, ctx.currentTime + .35);
+      src.start();
+    });
+  },
+};
+
+// ──────────────────────────────────────────
 //  BOOT SEQUENCE
 // ──────────────────────────────────────────
 const bootMessages = [
@@ -55,6 +197,7 @@ function runBootSequence() {
 }
 
 function enterSystem() {
+  SFX.powerUp();
   const bootScreen = document.getElementById('boot-screen');
   bootScreen.classList.add('fade-out');
   setTimeout(() => {
@@ -166,6 +309,7 @@ function initTypewriter() {
     const current = roles[ri];
     if (!deleting) {
       el.textContent = current.slice(0, ++ci);
+      SFX.typeTick();
       if (ci === current.length) { deleting = true; setTimeout(tick, 2000); return; }
     } else {
       el.textContent = current.slice(0, --ci);
@@ -202,6 +346,7 @@ function animateCounters(root) {
 //  SKILL BARS ANIMATION
 // ──────────────────────────────────────────
 function animateSkillBars(container) {
+  SFX.skillSweep();
   const fills = (container || document).querySelectorAll('.skill-fill');
   fills.forEach((fill, i) => {
     const level = parseInt(fill.closest('.skill-item')?.dataset.level || '80', 10);
@@ -342,6 +487,7 @@ function initScrollObserver() {
       if (entry.isIntersecting) {
         const section = entry.target;
         section.classList.add('visible');
+        if (section.id !== 'sobre') SFX.whoosh();
 
         const id = section.getAttribute('id');
         highlightNav(id);
@@ -369,8 +515,10 @@ function highlightNav(sectionId) {
 // ──────────────────────────────────────────
 function initNavigation() {
   document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('mouseenter', () => SFX.hover());
     link.addEventListener('click', e => {
       e.preventDefault();
+      SFX.click();
       const targetId = link.dataset.section;
       const target = document.getElementById(targetId);
       if (target) {
@@ -386,6 +534,7 @@ function initNavigation() {
   const backdrop = document.getElementById('nav-backdrop');
   if (menuBtn && nav) {
     menuBtn.addEventListener('click', () => {
+      SFX.click();
       const isOpen = nav.classList.toggle('open');
       menuBtn.classList.toggle('open', isOpen);
       menuBtn.setAttribute('aria-expanded', String(isOpen));
@@ -513,6 +662,7 @@ function initTerminal() {
   });
 
   input.addEventListener('keydown', e => {
+    SFX.termKey();
     if (e.key === 'Enter') {
       const cmd = input.value.trim().toLowerCase();
       if (!cmd) return;
@@ -601,10 +751,12 @@ function finalizeSale() {
 }
 
 function openPDVDemo() {
+  SFX.click();
   document.getElementById('pdv-modal').classList.remove('hidden');
 }
 
 function closePDVDemo() {
+  SFX.click();
   document.getElementById('pdv-modal').classList.add('hidden');
   clearCart();
 }
@@ -623,6 +775,21 @@ function submitForm(e) {
     btn.style.background = '';
     e.target.reset();
   }, 3000);
+}
+
+// ──────────────────────────────────────────
+//  SOUND TOGGLE
+// ──────────────────────────────────────────
+function initSoundToggle() {
+  const btn = document.getElementById('sound-toggle');
+  if (!btn) return;
+  btn.addEventListener('click', () => {
+    SFX.enabled = !SFX.enabled;
+    btn.textContent = SFX.enabled ? '🔊' : '🔇';
+    btn.classList.toggle('muted', !SFX.enabled);
+    btn.title = SFX.enabled ? 'Mutar Sons [M]' : 'Ativar Sons [M]';
+    if (SFX.enabled) SFX.chime();
+  });
 }
 
 // ──────────────────────────────────────────
@@ -656,6 +823,7 @@ function initBackToTop() {
 //  NOTIFICATIONS
 // ──────────────────────────────────────────
 function showNotification(msg) {
+  SFX.chime();
   const existing = document.querySelectorAll('.notification');
   existing.forEach(n => n.remove());
 
@@ -824,6 +992,7 @@ function initApp() {
   initScrollProgress();
   initBackToTop();
   initParticles();
+  initSoundToggle();
 
   // Trigger about section animations immediately
   setTimeout(() => {
@@ -842,6 +1011,11 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Escape') {
     closeTerminal();
     closePDVDemo();
+  }
+  if ((e.key === 'm' || e.key === 'M') &&
+      document.activeElement.tagName !== 'INPUT' &&
+      document.activeElement.tagName !== 'TEXTAREA') {
+    document.getElementById('sound-toggle')?.click();
   }
 });
 

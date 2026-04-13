@@ -239,6 +239,17 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   background: transparent;
 }
 .terminal-toggle:hover { color: var(--neon-blue); border-color: var(--neon-blue); }
+.sound-toggle {
+  font-size: .95rem;
+  color: var(--text-muted);
+  padding: .2rem .5rem;
+  border: 1px solid var(--dark-border);
+  border-radius: 4px;
+  transition: all .2s;
+  background: transparent;
+}
+.sound-toggle:hover { color: var(--neon-blue); border-color: var(--neon-blue); }
+.sound-toggle.muted { color: var(--neon-pink); border-color: var(--neon-pink); opacity: .7; }
 .mobile-menu-btn {
   display: none;
   flex-direction: column;
