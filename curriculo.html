@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Currículo — Marcos Rogério Tudes Lopes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ── BASE ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 14px; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f0f2f5;
+      color: #1a1a2e;
+      line-height: 1.55;
+    }
+    a { color: #1e40af; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── TOOLBAR (screen only) ── */
+    .toolbar {
+      background: #0f172a;
+      color: #e2e8f0;
+      padding: .75rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .toolbar-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .toolbar-logo {
+      font-family: 'Inter', sans-serif;
+      font-size: .85rem;
+      font-weight: 700;
+      color: #38bdf8;
+      letter-spacing: .05em;
+    }
+    .toolbar-label {
+      font-size: .8rem;
+      color: #64748b;
+    }
+    .toolbar-actions {
+      display: flex;
+      gap: .75rem;
+      align-items: center;
+    }
+    .btn-print {
+      background: linear-gradient(135deg, #0ea5e9, #6366f1);
+      color: #fff;
+      border: none;
+      padding: .5rem 1.4rem;
+      border-radius: 6px;
+      font-family: 'Inter', sans-serif;
+      font-size: .85rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      transition: opacity .2s;
+    }
+    .btn-print:hover { opacity: .88; }
+    .btn-back {
+      color: #94a3b8;
+      font-size: .82rem;
+      border: 1px solid #334155;
+      padding: .45rem 1rem;
+      border-radius: 6px;
+      transition: all .2s;
+      background: transparent;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+    }
+    .btn-back:hover { color: #e2e8f0; border-color: #64748b; text-decoration: none; }
+
+    /* ── PAGE ── */
+    .page-wrap {
+      max-width: 820px;
+      margin: 2rem auto;
+      padding: 0 1rem 3rem;
+    }
+    .cv {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 24px rgba(0,0,0,.1);
+      overflow: hidden;
+    }
+
+    /* ── HEADER ── */
+    .cv-header {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #fff;
+      padding: 2.5rem 2.5rem 2rem;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+    .cv-header-photo {
+      width: 90px;
+      height: 120px;
+      border-radius: 50% / 40%;
+      object-fit: cover;
+      object-position: center center;
+      border: 3px solid #38bdf8;
+      flex-shrink: 0;
+      box-shadow: 0 0 20px rgba(56,189,248,.35);
+    }
+    .cv-header-photo-fallback {
+      width: 90px;
+      height: 120px;
+      border-radius: 50% / 40%;
+      background: linear-gradient(135deg, #1e40af, #6366f1);
+      border: 3px solid #38bdf8;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #fff;
+      box-shadow: 0 0 20px rgba(56,189,248,.35);
+    }
+    .cv-header-info { flex: 1; }
+    .cv-header::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #0ea5e9, #6366f1, #8b5cf6);
+    }
+    .cv-name {
+      font-size: 1.9rem;
+      font-weight: 700;
+      letter-spacing: -.01em;
+      margin-bottom: .2rem;
+      color: #f1f5f9;
+    }
+    .cv-title {
+      font-size: 1rem;
+      color: #38bdf8;
+      font-weight: 500;
+      margin-bottom: 1.5rem;
+    }
+    .cv-contacts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem 1.5rem;
+      font-size: .8rem;
+      color: #94a3b8;
+    }
+    .cv-contact-item {
+      display: flex;
+      align-items: center;
+      gap: .35rem;
+    }
+    .cv-contact-item a { color: #7dd3fc; }
+    .cv-contact-item a:hover { color: #38bdf8; }
+
+    /* ── BODY ── */
+    .cv-body {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 0;
+    }
+    .cv-sidebar {
+      background: #f8fafc;
+      border-right: 1px solid #e2e8f0;
+      padding: 2rem 1.5rem;
+    }
+    .cv-main {
+      padding: 2rem 2rem;
+    }
+
+    /* ── SECTIONS ── */
+    .cv-section { margin-bottom: 1.75rem; }
+    .cv-section:last-child { margin-bottom: 0; }
+    .cv-section-title {
+      font-size: .7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: #6366f1;
+      margin-bottom: .75rem;
+      padding-bottom: .4rem;
+      border-bottom: 2px solid #e0e7ff;
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+    }
+    .cv-section-title::before {
+      content: '';
+      width: 3px; height: 14px;
+      background: linear-gradient(180deg, #6366f1, #0ea5e9);
+      border-radius: 2px;
+      display: inline-block;
+    }
+
+    /* ── SIDEBAR ITEMS ── */
+    .sidebar-text {
+      font-size: .85rem;
+      color: #475569;
+      margin-bottom: .35rem;
+    }
+    .skill-item-cv {
+      margin-bottom: .65rem;
+    }
+    .skill-name-cv {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: .25rem;
+    }
+    .skill-name-cv span:first-child {
+      font-size: .8rem;
+      color: #1e293b;
+      font-weight: 500;
+    }
+    .skill-name-cv span:last-child {
+      font-size: .72rem;
+      color: #6366f1;
+      font-weight: 600;
+    }
+    .skill-bar-cv {
+      height: 5px;
+      background: #e2e8f0;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .skill-fill-cv {
+      height: 100%;
+      background: linear-gradient(90deg, #0ea5e9, #6366f1);
+      border-radius: 3px;
+    }
+    .tool-badge {
+      display: inline-block;
+      font-size: .72rem;
+      background: #e0e7ff;
+      color: #4338ca;
+      padding: .15rem .55rem;
+      border-radius: 20px;
+      margin: .15rem .1rem;
+      font-weight: 500;
+    }
+    .course-item {
+      font-size: .8rem;
+      color: #475569;
+      padding: .2rem 0;
+      padding-left: .75rem;
+      position: relative;
+    }
+    .course-item::before {
+      content: '▸';
+      position: absolute; left: 0;
+      color: #6366f1;
+    }
+
+    /* ── EXPERIENCE & TIMELINE (main) ── */
+    .exp-item {
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid #f1f5f9;
+      position: relative;
+    }
+    .exp-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .exp-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: .3rem;
+      flex-wrap: wrap;
+    }
+    .exp-company {
+      font-size: .95rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .exp-period {
+      font-size: .75rem;
+      color: #6366f1;
+      font-weight: 600;
+      background: #eef2ff;
+      padding: .15rem .6rem;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+    .exp-role {
+      font-size: .85rem;
+      color: #3b82f6;
+      font-weight: 600;
+      margin-bottom: .5rem;
+    }
+    .exp-list {
+      padding-left: 0;
+    }
+    .exp-list li {
+      font-size: .82rem;
+      color: #475569;
+      margin-bottom: .25rem;
+      padding-left: 1rem;
+      position: relative;
+      list-style: none;
+    }
+    .exp-list li::before {
+      content: '▸';
+      position: absolute; left: 0;
+      color: #6366f1;
+      font-size: .7rem;
+      top: .08rem;
+    }
+
+    /* ── OBJECTIVE ── */
+    .obj-text {
+      font-size: .85rem;
+      color: #475569;
+      line-height: 1.65;
+    }
+
+    /* ── PRINT STYLES ── */
+    @media print {
+      @page { margin: 1.2cm 1.4cm; size: A4; }
+      body { background: #fff; font-size: 11px; }
+      .toolbar, .page-wrap > *:not(.cv) { display: none !important; }
+      .page-wrap { margin: 0; padding: 0; max-width: 100%; }
+      .cv { box-shadow: none; border-radius: 0; }
+      .cv-header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .cv-sidebar { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .skill-fill-cv { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .tool-badge { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      a { color: inherit !important; text-decoration: none !important; }
+      .exp-item { page-break-inside: avoid; }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .cv-header { padding: 1.5rem; }
+      .cv-body { grid-template-columns: 1fr; }
+      .cv-sidebar { border-right: none; border-bottom: 1px solid #e2e8f0; }
+      .cv-main { padding: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOOLBAR -->
+  <div class="toolbar">
+    <div class="toolbar-left">
+      <span class="toolbar-logo">[ MARKIN.dev ]</span>
+      <span class="toolbar-label">Currículo — Marcos Rogério Tudes Lopes</span>
+    </div>
+    <div class="toolbar-actions">
+      <a href="index.html" class="btn-back">← Voltar ao Portfólio</a>
+      <button class="btn-print" onclick="window.print()">
+        ⬇ Salvar como PDF
+      </button>
+    </div>
+  </div>
+
+  <div class="page-wrap">
+    <div class="cv">
+
+      <!-- HEADER -->
+      <div class="cv-header">
+        <img src="images/foto.jpg" alt="Marcos Rogério" class="cv-header-photo"
+             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+        <div class="cv-header-photo-fallback" style="display:none;">MR</div>
+        <div class="cv-header-info">
+          <div class="cv-name">Marcos Rogério Tudes Lopes</div>
+          <div class="cv-title">Desenvolvedor de Software Full Stack · Backend · Análise de Dados</div>
+          <div class="cv-contacts">
+            <span class="cv-contact-item">📍 Brasília/DF</span>
+            <span class="cv-contact-item">📞 (61) 9.9447-4924</span>
+            <span class="cv-contact-item">✉ <a href="mailto:marcosr10oficial@hotmail.com">marcosr10oficial@hotmail.com</a></span>
+            <span class="cv-contact-item">💼 <a href="https://www.linkedin.com/in/marcos-lopes-b99a47201/" target="_blank">linkedin.com/in/marcos-lopes-b99a47201</a></span>
+            <span class="cv-contact-item">🐙 <a href="https://github.com/dev-markin" target="_blank">github.com/dev-markin</a></span>
+            <span class="cv-contact-item">🌐 Inglês Básico · Disponibilidade imediata</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- BODY -->
+      <div class="cv-body">
+
+        <!-- SIDEBAR -->
+        <div class="cv-sidebar">
+
+          <!-- Formação -->
+          <div class="cv-section">
+            <div class="cv-section-title">Formação</div>
+            <p class="sidebar-text"><strong>Análise e Desenvolvimento de Sistemas</strong></p>
+            <p class="sidebar-text" style="color:#6366f1; font-size:.78rem; font-weight:600;">Superior Completo</p>
+          </div>
+
+          <!-- Skills Técnicas -->
+          <div class="cv-section">
+            <div class="cv-section-title">Skills Técnicas</div>
+
+            <div class="skill-item-cv">
+              <div class="skill-name-cv"><span>Python</span><span>90%</span></div>
+              <div class="skill-bar-cv"><div class="skill-fill-cv" style="width:90%"></div></div>
+            </div>
+            <div class="skill-item-cv">
+              <div class="skill-name-cv"><span>Flask</span><span>90%</span></div>
+              <div class="skill-bar-cv"><div class="skill-fill-cv" style="width:90%"></div></div>
+            </div>
+            <div class="skill-item-cv">
+              <div class="skill-name-cv"><span>APIs REST</span><span>90%</span></div>
+              <div class="skill-bar-cv"><div class="skill-fill-cv" style="width:90%"></div></div>
+            </div>
+            <div class="skill-item-cv">
+              <div class="skill-name-cv"><span>Django</span><span>85%</span></div>
+              <div class="skill-bar-cv"><div class="skill-fill-cv" style="width:85%"></div></div>
+            </div>
+            <div class="skill-item-cv">
+              <div class="skill-name-cv"><span>JavaScript</span><span>85%</span></div>
+              <div class="skill-bar-cv"><div class="skill-fill-cv" style="width:85%"></div></div>
+            </div>
+            <div class="skill-item-cv">
+              <div class="skill-name-cv"><span>HTML5 / CSS3</span><span>85%</span></div>
+              <div class="skill-bar-cv"><div class="skill-fill-cv" style="width:85%"></div></div>
+            </div>
+            <div class="skill-item-cv">
+              <div class="skill-name-cv"><span>MySQL / SQLite</span><span>85%</span></div>
+              <div class="skill-bar-cv"><div class="skill-fill-cv" style="width:85%"></div></div>
+            </div>
+            <div class="skill-item-cv">
+              <div class="skill-name-cv"><span>PostgreSQL</span><span>80%</span></div>
+              <div class="skill-bar-cv"><div class="skill-fill-cv" style="width:80%"></div></div>
+            </div>
+            <div class="skill-item-cv">
+              <div class="skill-name-cv"><span>Pandas</span><span>80%</span></div>
+              <div class="skill-bar-cv"><div class="skill-fill-cv" style="width:80%"></div></div>
+            </div>
+            <div class="skill-item-cv">
+              <div class="skill-name-cv"><span>Java</span><span>75%</span></div>
+              <div class="skill-bar-cv"><div class="skill-fill-cv" style="width:75%"></div></div>
+            </div>
+          </div>
+
+          <!-- Ferramentas -->
+          <div class="cv-section">
+            <div class="cv-section-title">Ferramentas</div>
+            <div>
+              <span class="tool-badge">Power BI</span>
+              <span class="tool-badge">Excel</span>
+              <span class="tool-badge">Pacote Office</span>
+              <span class="tool-badge">Git / GitHub</span>
+              <span class="tool-badge">VS Code</span>
+            </div>
+          </div>
+
+          <!-- Cursos -->
+          <div class="cv-section">
+            <div class="cv-section-title">Cursos Complementares</div>
+            <div class="course-item">Administrador de Banco de Dados</div>
+            <div class="course-item">Lógica de Programação</div>
+            <div class="course-item">Programador de Sistemas</div>
+          </div>
+
+          <!-- Idiomas -->
+          <div class="cv-section">
+            <div class="cv-section-title">Idiomas</div>
+            <div class="skill-item-cv">
+              <div class="skill-name-cv"><span>Português</span><span>Nativo</span></div>
+              <div class="skill-bar-cv"><div class="skill-fill-cv" style="width:100%"></div></div>
+            </div>
+            <div class="skill-item-cv">
+              <div class="skill-name-cv"><span>Inglês</span><span>Básico</span></div>
+              <div class="skill-bar-cv"><div class="skill-fill-cv" style="width:30%"></div></div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- MAIN -->
+        <div class="cv-main">
+
+          <!-- Resumo -->
+          <div class="cv-section">
+            <div class="cv-section-title">Resumo Profissional</div>
+            <p class="obj-text">
+              Desenvolvedor de Software com mais de 3 anos de experiência em desenvolvimento backend e análise de dados. Atualmente atuando na construção de um sistema de Ponto de Venda (PDV) utilizando Python, Flask, MySQL, SQLite, HTML, CSS e JavaScript. Responsável pelo desenvolvimento de APIs REST, modelagem e gerenciamento de bancos de dados relacionais, e implementação de interfaces web, garantindo soluções escaláveis e de alto desempenho.
+            </p>
+            <br>
+            <p class="obj-text">
+              Experiência sólida no levantamento e documentação de requisitos técnicos, assegurando o alinhamento entre as necessidades do negócio e as entregas das equipes de desenvolvimento. Habilidade em manipulação e interpretação de grandes volumes de dados para suporte estratégico, utilizando técnicas estatísticas e ferramentas de visualização (dashboards e relatórios). Busca por desafios que exijam soluções inovadoras e aprimoramento técnico constante.
+            </p>
+          </div>
+
+          <!-- Experiências -->
+          <div class="cv-section">
+            <div class="cv-section-title">Experiências Profissionais</div>
+
+            <div class="exp-item">
+              <div class="exp-header">
+                <div class="exp-company">VixTec Automação Comercial</div>
+                <span class="exp-period">02/2026 — Atualmente</span>
+              </div>
+              <div class="exp-role">Desenvolvedor de Software Full Stack</div>
+              <ul class="exp-list">
+                <li>Desenvolvimento de Sistema de Frente de Loja (PDV) sob medida para ambiente comercial.</li>
+                <li>Implementação de backend em Python com Flask, incluindo regras de negócio, APIs e integrações.</li>
+                <li>Desenvolvimento do frontend com HTML, CSS e JavaScript, focado em usabilidade e fluxo de caixa.</li>
+                <li>Modelagem, implementação e manutenção de bancos de dados MySQL e SQLite.</li>
+                <li>Criação de funcionalidades como vendas, produtos, clientes, caixa, relatórios e controle de dados.</li>
+                <li>Integração entre interface e banco de dados garantindo performance e consistência.</li>
+                <li>Testes, correções, melhorias contínuas e suporte técnico ao sistema.</li>
+                <li>Atuação full stack, do levantamento de requisitos à entrega final do sistema.</li>
+              </ul>
+            </div>
+
+            <div class="exp-item">
+              <div class="exp-header">
+                <div class="exp-company">SEMOB — Secretaria Municipal de Mobilidade</div>
+                <span class="exp-period">06/2022 — 12/2023</span>
+              </div>
+              <div class="exp-role">Estagiário Desenvolvedor Web e Analista de Dados</div>
+              <ul class="exp-list">
+                <li>Apoio no desenvolvimento de sistemas web e manutenção de sites e aplicativos.</li>
+                <li>Criação e manutenção de bancos de dados, aplicando linguagens de marcação e programação back-end.</li>
+                <li>Suporte na análise, estruturação e tabulação de dados para fins operacionais e estratégicos.</li>
+                <li>Desenvolvimento de sistemas de coleta e análise de dados, otimizando a qualidade estatística das informações.</li>
+                <li>Participação na pesquisa e avaliação de novos projetos de sistemas, com foco em eficiência e escalabilidade.</li>
+                <li>Execução de testes de software e apoio na resolução de falhas operacionais.</li>
+              </ul>
+            </div>
+
+            <div class="exp-item">
+              <div class="exp-header">
+                <div class="exp-company">CEBRASPE</div>
+                <span class="exp-period">04/2024 — 06/2024</span>
+              </div>
+              <div class="exp-role">Colaborador (RPA)</div>
+              <ul class="exp-list">
+                <li>Criação e desenvolvimento de itens técnicos para provas nas áreas de Tecnologia da Informação e Desenvolvimento de Sistemas.</li>
+                <li>Elaboração de questões sobre linguagens de programação, banco de dados e metodologias ágeis.</li>
+                <li>Revisão e validação de conteúdo, garantindo aderência aos padrões de qualidade e requisitos do setor de TI.</li>
+              </ul>
+            </div>
+
+            <div class="exp-item">
+              <div class="exp-header">
+                <div class="exp-company">EMBRAPA — Empresa Brasileira de Pesquisa Agropecuária</div>
+                <span class="exp-period">01/2017 — 05/2017</span>
+              </div>
+              <div class="exp-role">Estagiário de Tecnologia da Informação</div>
+              <ul class="exp-list">
+                <li>Organização e controle de arquivos físicos e digitais, garantindo o fluxo adequado de informações institucionais.</li>
+                <li>Controle de materiais e ativos de TI, com foco em inventário, requisições e monitoramento de estoque.</li>
+                <li>Suporte técnico em hardware e software, realizando manutenções e atendendo solicitações de usuários finais.</li>
+                <li>Apoio na atualização do patrimônio tecnológico e no suporte às operações de infraestrutura.</li>
+              </ul>
+            </div>
+
+          </div><!-- /experiencias -->
+
+        </div><!-- /cv-main -->
+      </div><!-- /cv-body -->
+
+    </div><!-- /cv -->
+  </div><!-- /page-wrap -->
+
+</body>
+</html>
