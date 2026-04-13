@@ -204,6 +204,16 @@ function animateCounters(root) {
 function animateSkillBars(container) {
   const fills = (container || document).querySelectorAll('.skill-fill');
   fills.forEach((fill, i) => {
+    const level = parseInt(fill.closest('.skill-item')?.dataset.level || '80', 10);
+    if (level >= 88) {
+      fill.style.background = 'linear-gradient(90deg, #00d4ff, #00ff88)';
+      fill.style.boxShadow = '0 0 10px rgba(0,255,136,.5)';
+    } else if (level >= 78) {
+      fill.style.background = 'linear-gradient(90deg, #00d4ff, #bf00ff)';
+    } else {
+      fill.style.background = 'linear-gradient(90deg, #bf00ff, #ff0080)';
+      fill.style.boxShadow = '0 0 10px rgba(191,0,255,.45)';
+    }
     setTimeout(() => fill.classList.add('animated'), i * 80);
   });
 }
@@ -373,14 +383,30 @@ function initNavigation() {
   // Mobile menu
   const menuBtn = document.getElementById('mobile-menu-btn');
   const nav = document.getElementById('hud-nav');
+  const backdrop = document.getElementById('nav-backdrop');
   if (menuBtn && nav) {
-    menuBtn.addEventListener('click', () => nav.classList.toggle('open'));
+    menuBtn.addEventListener('click', () => {
+      const isOpen = nav.classList.toggle('open');
+      menuBtn.classList.toggle('open', isOpen);
+      menuBtn.setAttribute('aria-expanded', String(isOpen));
+      if (backdrop) backdrop.classList.toggle('active', isOpen);
+    });
+  }
+  if (backdrop) {
+    backdrop.addEventListener('click', closeMenuMobile);
   }
 }
 
 function closeMenuMobile() {
   const nav = document.getElementById('hud-nav');
+  const menuBtn = document.getElementById('mobile-menu-btn');
+  const backdrop = document.getElementById('nav-backdrop');
   if (nav) nav.classList.remove('open');
+  if (menuBtn) {
+    menuBtn.classList.remove('open');
+    menuBtn.setAttribute('aria-expanded', 'false');
+  }
+  if (backdrop) backdrop.classList.remove('active');
 }
 
 // ──────────────────────────────────────────
@@ -600,6 +626,33 @@ function submitForm(e) {
 }
 
 // ──────────────────────────────────────────
+//  SCROLL PROGRESS
+// ──────────────────────────────────────────
+function initScrollProgress() {
+  const bar = document.getElementById('scroll-progress');
+  if (!bar) return;
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (docHeight > 0 ? (scrollTop / docHeight) * 100 : 0) + '%';
+  }, { passive: true });
+}
+
+// ──────────────────────────────────────────
+//  BACK TO TOP
+// ──────────────────────────────────────────
+function initBackToTop() {
+  const btn = document.getElementById('back-to-top');
+  if (!btn) return;
+  window.addEventListener('scroll', () => {
+    btn.classList.toggle('visible', window.scrollY > 400);
+  }, { passive: true });
+  btn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
+
+// ──────────────────────────────────────────
 //  NOTIFICATIONS
 // ──────────────────────────────────────────
 function showNotification(msg) {
@@ -681,6 +734,82 @@ function initCursorGlow() {
 }
 
 // ──────────────────────────────────────────
+//  FLOATING PARTICLES
+// ──────────────────────────────────────────
+function initParticles() {
+  const canvas = document.createElement('canvas');
+  canvas.id = 'particles-canvas';
+  Object.assign(canvas.style, {
+    position: 'fixed',
+    top: '0', left: '0',
+    width: '100%', height: '100%',
+    pointerEvents: 'none',
+    zIndex: '1',
+  });
+  const app = document.getElementById('app');
+  if (!app) return;
+  app.prepend(canvas);
+
+  const ctx = canvas.getContext('2d');
+  function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const palette = [
+    [0, 212, 255],    // neon blue
+    [191,  0, 255],   // neon purple
+    [0, 255, 136],    // neon green
+    [255,   0, 128],  // neon pink
+  ];
+
+  function spawn(randomY) {
+    const col = palette[Math.floor(Math.random() * palette.length)];
+    return {
+      x:     Math.random() * canvas.width,
+      y:     randomY ? Math.random() * canvas.height : canvas.height + 10,
+      size:  Math.random() * 2.2 + .5,
+      vy:    Math.random() * .38 + .08,
+      vx:    (Math.random() - .5) * .22,
+      alpha: Math.random() * .18 + .04,
+      color: col,
+      diamond: Math.random() > .55,
+    };
+  }
+
+  const pts = Array.from({ length: 45 }, () => spawn(true));
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    pts.forEach((p, i) => {
+      p.y -= p.vy;
+      p.x += p.vx;
+      if (p.y < -10 || p.x < -20 || p.x > canvas.width + 20) {
+        pts[i] = spawn(false);
+        return;
+      }
+      const [r, g, b] = p.color;
+      ctx.globalAlpha = p.alpha;
+      if (p.diamond) {
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(Math.PI / 4);
+        ctx.fillStyle = `rgb(${r},${g},${b})`;
+        ctx.fillRect(-p.size, -p.size, p.size * 2, p.size * 2);
+        ctx.restore();
+      } else {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgb(${r},${g},${b})`;
+        ctx.fill();
+      }
+    });
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+// ──────────────────────────────────────────
 //  INIT APP
 // ──────────────────────────────────────────
 function initApp() {
@@ -692,6 +821,9 @@ function initApp() {
   initModals();
   initGlitchHover();
   initCursorGlow();
+  initScrollProgress();
+  initBackToTop();
+  initParticles();
 
   // Trigger about section animations immediately
   setTimeout(() => {

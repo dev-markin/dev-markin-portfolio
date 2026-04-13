@@ -7,6 +7,7 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
   <link rel="stylesheet" href="styles/main.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -37,6 +38,13 @@
   <!-- ═══════════════════════════════════════ MAIN APP ═══════════════════════════════════════ -->
   <div id="app" style="display:none;">
 
+    <!-- SCROLL PROGRESS -->
+    <div class="scroll-progress" id="scroll-progress"></div>
+
+    <!-- VISUAL OVERLAYS -->
+    <div class="vignette"></div>
+    <div class="scanlines"></div>
+
     <!-- HUD TOP BAR -->
     <header class="hud-header">
       <div class="hud-logo">
@@ -54,9 +62,15 @@
         <span class="status-dot pulse"></span>
         <span class="status-text">ONLINE</span>
         <button class="terminal-toggle" id="terminal-toggle" title="Abrir Terminal [Ctrl+`]">⌨</button>
-        <button class="mobile-menu-btn" id="mobile-menu-btn">☰</button>
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Abrir menu" aria-expanded="false">
+          <span class="menu-line"></span>
+          <span class="menu-line"></span>
+          <span class="menu-line"></span>
+        </button>
       </div>
     </header>
+
+    <div class="nav-backdrop" id="nav-backdrop"></div>
 
     <!-- GRID BACKGROUND -->
     <canvas id="grid-canvas"></canvas>
@@ -101,7 +115,7 @@
                 Desenvolvedor de Software com <span class="highlight">+3 anos de experiência</span> em backend robusto, análise de dados e desenvolvimento full stack.
               </p>
               <p>
-                Atualmente construindo um <span class="highlight">sistema PDV completo</span> com Flask/Django, integrações bancárias e APIs REST de alta performance.
+                Atualmente construindo um <span class="highlight">sistema PDV completo</span> com Flask, integrações bancárias e APIs REST de alta performance.
               </p>
               <p>
                 Combinando <span class="highlight">Python + Java + IA</span> para entregar soluções que vão além do código — sistemas que <em>pensam</em>.
@@ -254,17 +268,16 @@
               </div>
             </div>
             <p class="project-desc">
-              Sistema de ponto de venda robusto com backend em Flask/Django, banco de dados relacional, regras de negócio avançadas e interface otimizada para operação em tempo real.
+              Sistema de ponto de venda robusto com backend em Flask, banco de dados relacional, regras de negócio avançadas e interface otimizada para operação em tempo real.
             </p>
             <div class="project-tags">
               <span class="tag">Flask</span>
-              <span class="tag">Django</span>
               <span class="tag">PostgreSQL</span>
               <span class="tag">APIs REST</span>
               <span class="tag">JavaScript</span>
             </div>
             <div class="project-features">
-              <div class="feature-item"><span class="feature-icon">✓</span> Backend robusto com Flask/Django</div>
+              <div class="feature-item"><span class="feature-icon">✓</span> Backend robusto com Flask</div>
               <div class="feature-item"><span class="feature-icon">✓</span> Integração com banco de dados</div>
               <div class="feature-item"><span class="feature-icon">✓</span> Regras de negócio complexas</div>
               <div class="feature-item"><span class="feature-icon">✓</span> Interface otimizada para UX</div>
@@ -359,14 +372,14 @@
               <div class="timeline-desc">
                 <ul>
                   <li>Desenvolvimento de Sistema PDV completo</li>
-                  <li>Backend robusto com Flask e Django</li>
+                  <li>Backend robusto com Flask</li>
                   <li>Integração com banco de dados PostgreSQL</li>
                   <li>APIs REST e regras de negócio avançadas</li>
                   <li>Frontend com foco em UX e performance</li>
                 </ul>
               </div>
               <div class="timeline-tags">
-                <span class="tag">Flask</span><span class="tag">Django</span><span class="tag">PostgreSQL</span><span class="tag">APIs REST</span>
+                <span class="tag">Flask</span><span class="tag">PostgreSQL</span><span class="tag">APIs REST</span>
               </div>
             </div>
           </div>
@@ -572,6 +585,9 @@
     </footer>
 
   </div>
+
+  <!-- ── BACK TO TOP ── -->
+  <button class="back-to-top" id="back-to-top" aria-label="Voltar ao topo">↑</button>
 
   <!-- ═══════════════════════════════════════ TERMINAL ═══════════════════════════════════════ -->
   <div id="terminal-overlay" class="hidden">
